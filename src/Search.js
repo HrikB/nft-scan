@@ -33,11 +33,28 @@ function Search() {
 
   useEffect(async () => {
     if (walletAddr) {
+      //gets list of all collection in wallet
       const collection = await fetchCollections();
       setUserCollections(collection.data);
 
+      //gets all nfts in wallet
       const assets = await fetchAssets();
-      setUserNFTs(assets.data.assets);
+      //makes map of all nfts where key is the collection slug and value is an array of all the nfts
+      const collectionMap = new Map();
+      collection.data.forEach((e) => {
+        collectionMap.set(e.slug, []);
+      });
+      assets.data.assets.forEach((e) => {
+        var prevArr = collectionMap.get(e.collection.slug);
+        prevArr.push(e);
+        collectionMap.set(e.collection.slug, prevArr);
+      });
+
+      const userNFTDisplayArr = [];
+      collectionMap.forEach((e) => {
+        userNFTDisplayArr.push(e[e.length - 1]);
+      });
+      setUserNFTs(userNFTDisplayArr);
     }
   }, [walletAddr]);
 
@@ -47,10 +64,7 @@ function Search() {
         <div className="collectionList__container">{e.name}</div>
       ))}
       <div height="30px"></div>
-      {userNFTs.forEach((e) => {
-        console.log(e);
-        console.log();
-      })}
+
       {userNFTs.map((e) => (
         <img src={e.image_url} />
       ))}
