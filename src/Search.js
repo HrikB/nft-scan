@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 function Search() {
   const [userCollections, setUserCollections] = useState([]);
   const [userNFTs, setUserNFTs] = useState([]);
+  const [collMap, setCollMap] = useState([]);
   const [walletAddr, setWalletAddr] = useState(
     "0x553a96c13b67D500182bb6aB46d53A2eDFb22706"
   );
@@ -49,7 +50,9 @@ function Search() {
         prevArr.push(e);
         collectionMap.set(e.collection.slug, prevArr);
       });
+      setCollMap(collectionMap);
 
+      //gets one of each collection and stores a refernce in an array
       const userNFTDisplayArr = [];
       collectionMap.forEach((e) => {
         userNFTDisplayArr.push(e[e.length - 1]);
@@ -59,14 +62,38 @@ function Search() {
   }, [walletAddr]);
 
   return (
-    <div>
-      {userCollections.map((e) => (
-        <div className="collectionList__container">{e.name}</div>
-      ))}
-      <div height="30px"></div>
-
+    <div className="result__container">
+      {userNFTs.forEach((e) => {
+        console.log(collMap.get(e.collection.slug).length);
+      })}
       {userNFTs.map((e) => (
-        <img src={e.image_url} />
+        <div className="collection__container">
+          <img src={e.image_url} />
+          <div className="displayNFT__container">
+            <p style={{ fontWeight: "bold" }}>
+              {e.name
+                ? e.name.length < 20
+                  ? e.name
+                  : e.name.substring(0, 20) + "..."
+                : "--"}
+            </p>
+            <p>
+              {e.collection.name.length < 20
+                ? e.collection.name
+                : e.collection.name.substring(0, 20) + "..."}
+            </p>
+          </div>
+          <div className="view__all">
+            <span
+              style={{
+                visibility:
+                  collMap.get(e.collection.slug).length > 1 ? "auto" : "hidden",
+              }}
+            >
+              View all ({collMap.get(e.collection.slug).length})
+            </span>
+          </div>
+        </div>
       ))}
     </div>
   );
