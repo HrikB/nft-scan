@@ -3,8 +3,7 @@
 }
 
 html {
-  background: linear-gradient(rgba(250, 0, 0, 0.5), transparent);
-  background-color: orange;
+  background: linear-gradient(#8a8aff 1%, #6666ff 50%, #8a8aff 99%);
 }
 
 .App {

@@ -8,28 +8,47 @@ function Search() {
   const [userNFTs, setUserNFTs] = useState([]);
   const [collMap, setCollMap] = useState([]);
   const [walletAddr, setWalletAddr] = useState(
-    "0x553a96c13b67D500182bb6aB46d53A2eDFb22706"
+    "0xd6a984153acb6c9e2d788f08c2465a1358bb89a7"
   );
+  //logz:
+  //0xff0bd4aa3496739d5667adc10e2b843dfab5712b
+  //Mine:
+  //0x553a96c13b67D500182bb6aB46d53A2eDFb22706
 
   const slugArr = [];
 
   const fetchCollections = () => {
     return axios
       .get("https://api.opensea.io/api/v1/collections", {
-        params: { asset_owner: walletAddr },
+        params: { asset_owner: walletAddr, limit: 300 },
       })
+
       .catch((e) => {
         console.log("error", e);
       });
   };
 
-  const fetchAssets = () => {
-    return axios.get("https://api.opensea.io/api/v1/assets/", {
-      params: {
-        owner: walletAddr,
-        limit: 50,
-      },
-    });
+  const fetchAssets = (offset) => {
+    return (
+      axios
+        .get("https://api.opensea.io/api/v1/assets/", {
+          params: {
+            owner: walletAddr,
+            limit: 50,
+            offset: offset,
+          },
+        })
+        /*.then(async (res) => {
+        console.log("resres", res.data.assets);
+        if (res.data.assets.length == 50) {
+          await fetchAssets(offset + 50);
+        }
+      })*/
+
+        .catch((e) => {
+          console.log("assetsError", e);
+        })
+    );
   };
 
   useEffect(async () => {
@@ -39,13 +58,31 @@ function Search() {
       setUserCollections(collection.data);
 
       //gets all nfts in wallet
-      const assets = await fetchAssets();
+      var finalArr = [];
+      const assets = await fetchAssets(0);
+      finalArr = finalArr.concat(assets.data.assets);
+
+      const overLimit = async (offset) => {
+        console.log("awaiting overLimit", offset);
+        const res = await fetchAssets(offset);
+        finalArr = finalArr.concat(res.data.assets);
+        if (res.data.assets.length == 50) {
+          await overLimit(offset + 50);
+        }
+      };
+      if (assets.data.assets.length == 50) {
+        await overLimit(50);
+      }
+
+      console.log("final", finalArr);
+
       //makes map of all nfts where key is the collection slug and value is an array of all the nfts
       const collectionMap = new Map();
+      console.log("collection", collection.data);
       collection.data.forEach((e) => {
         collectionMap.set(e.slug, []);
       });
-      assets.data.assets.forEach((e) => {
+      finalArr.forEach((e) => {
         var prevArr = collectionMap.get(e.collection.slug);
         prevArr.push(e);
         collectionMap.set(e.collection.slug, prevArr);
@@ -63,22 +100,19 @@ function Search() {
 
   return (
     <div className="result__container">
-      {userNFTs.forEach((e) => {
-        console.log(collMap.get(e.collection.slug).length);
-      })}
       {userNFTs.map((e) => (
         <div className="collection__container">
           <img src={e.image_url} />
           <div className="displayNFT__container">
             <p style={{ fontWeight: "bold" }}>
               {e.name
-                ? e.name.length < 20
+                ? e.name.length < 17
                   ? e.name
                   : e.name.substring(0, 20) + "..."
                 : "--"}
             </p>
             <p>
-              {e.collection.name.length < 20
+              {e.collection.name.length < 17
                 ? e.collection.name
                 : e.collection.name.substring(0, 20) + "..."}
             </p>

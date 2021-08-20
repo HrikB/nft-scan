@@ -7,7 +7,7 @@
 }
 
 .collection__container {
-  background-color: turquoise;
+  background-color: #ccf;
   box-sizing: border-box;
   max-width: 100%;
   display: flex;
@@ -15,6 +15,11 @@
   height: 23rem;
   padding: 10px;
   justify-content: space-between;
+  border: 10px blue solid;
+}
+
+.collection__container:hover {
+  cursor: pointer;
 }
 
 .collection__container img {
