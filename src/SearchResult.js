@@ -19,8 +19,6 @@ function SearchResult() {
   //Flamingo:
   //0xb88f61e6fbda83fbfffabe364112137480398018
 
-  const slugArr = [];
-
   const fetchCollections = () => {
     return axios
       .get("https://api.opensea.io/api/v1/collections", {
@@ -48,6 +46,9 @@ function SearchResult() {
   };
 
   useEffect(async () => {
+    setUserCollections([]);
+    setUserNFTs([]);
+    setCollMap([]);
     if (walletAddr) {
       //gets list of all collection in wallet
       const collection = await fetchCollections();
