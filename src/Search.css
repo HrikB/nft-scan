@@ -1,42 +1,32 @@
-.result__container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  margin: 30px 4rem;
-  grid-gap: 30px;
-  max-width: 100vw;
+.search__container {
+  height: 5rem;
 }
 
-.collection__container {
-  background-color: #ccf;
+.search__container form {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.search__container form input {
+  position: absolute;
+  min-width: 250px;
   box-sizing: border-box;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  height: 23rem;
-  padding: 10px;
-  justify-content: space-between;
-  border: 10px blue solid;
+  top: 30px;
+  padding: 5px;
+  background-color: #d9f3e1;
+  border-radius: 0px;
+  outline: none;
+  border: none;
+  width: 40%;
+  height: 40px;
 }
 
-.collection__container:hover {
-  cursor: pointer;
+.search__container form input:hover {
+  transform: scale(1.05);
 }
 
-.collection__container img {
-  max-height: 70%;
-  object-fit: contain;
-}
-
-.displayNFT__container {
-  display: flex;
-  flex-direction: column;
-}
-
-.displayNFT__container p {
-  margin: 0 5px;
-}
-
-.view__all span {
-  font-size: 0.7rem;
-  font-weight: bold;
+.search__container form button {
+  visibility: hidden;
 }
