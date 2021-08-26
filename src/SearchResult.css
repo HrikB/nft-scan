@@ -4,6 +4,7 @@
   margin: 30px 4rem;
   grid-gap: 30px;
   max-width: 100vw;
+  position: relative;
 }
 
 .collection__container {
@@ -39,5 +40,22 @@
 
 .view__all span {
   font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.loading__screen {
+  width: 100%;
+  position: absolute;
+}
+
+.loading__screen .loading__img {
+  background-color: transparent;
+  width: 10rem;
+  object-fit: contain;
+}
+
+.loading__screen p {
+  color: #ffe5b4;
+  font-size: 1.4rem;
   font-weight: bold;
 }

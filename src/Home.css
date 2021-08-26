@@ -1,0 +1,8 @@
+.home__page {
+  width: 100vw;
+  background-color: transparent;
+}
+
+.home__page p {
+  font-size: 3rem;
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import "./SearchResult.css";
 import axios from "axios";
+import loading from "./loading.svg";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -8,9 +9,7 @@ function SearchResult() {
   const [userCollections, setUserCollections] = useState([]);
   const [userNFTs, setUserNFTs] = useState([]);
   const [collMap, setCollMap] = useState([]);
-  /*const [walletAddr, setWalletAddr] = useState(
-    "0x553a96c13b67D500182bb6aB46d53A2eDFb22706"
-  );*/
+  const [isLoading, setIsLoading] = useState(false);
   const { walletAddr } = useParams();
   //logz:
   //0xff0bd4aa3496739d5667adc10e2b843dfab5712b
@@ -50,6 +49,7 @@ function SearchResult() {
     setUserNFTs([]);
     setCollMap([]);
     if (walletAddr) {
+      setIsLoading(true);
       //gets list of all collection in wallet
       const collection = await fetchCollections();
       setUserCollections(collection.data);
@@ -60,7 +60,6 @@ function SearchResult() {
       finalArr = finalArr.concat(assets.data.assets);
 
       const overLimit = async (offset) => {
-        console.log("awaiting overLimit", offset);
         const res = await fetchAssets(offset);
         finalArr = finalArr.concat(res.data.assets);
         if (res.data.assets.length == 50) {
@@ -70,12 +69,9 @@ function SearchResult() {
       if (assets.data.assets.length == 50) {
         await overLimit(50);
       }
-
-      console.log("final", finalArr);
-
+      setIsLoading(false);
       //makes map of all nfts where key is the collection slug and value is an array of all the nfts
       const collectionMap = new Map();
-      console.log("collection", collection.data);
       collection.data.forEach((e) => {
         collectionMap.set(e.slug, []);
       });
@@ -126,6 +122,14 @@ function SearchResult() {
           </div>
         </div>
       ))}
+      {isLoading ? (
+        <div className="loading__screen">
+          <img src={loading} className="loading__img" />
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <span />
+      )}
     </div>
   );
 }
