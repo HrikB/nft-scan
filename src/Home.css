@@ -1,0 +1,19 @@
+.home__page {
+  width: 100vw;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+}
+
+.home__page p {
+  width: 75%;
+  color: #ffe5b4;
+  font-weight: 1000;
+  font-size: 4rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .home__page p {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,12 @@
+* {
+  font-family: "Space Mono", monospace;
+}
+
+html {
+  background: linear-gradient(#b6eccb 1%, 10%, #074866 50%, 90%, #b6eccb 99%);
+  min-height: 100vh;
+}
+
+.App {
+  text-align: center;
+}

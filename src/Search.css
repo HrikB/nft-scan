@@ -1,0 +1,32 @@
+.search__container {
+  height: 5rem;
+}
+
+.search__container form {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.search__container form input {
+  position: absolute;
+  min-width: 250px;
+  box-sizing: border-box;
+  top: 30px;
+  padding: 8px;
+  background-color: #b8e2da;
+  border-radius: 0px;
+  outline: none;
+  border: none;
+  width: 40%;
+  height: 40px;
+}
+
+.search__container form input:hover {
+  transform: scale(1.05);
+}
+
+.search__container form button {
+  visibility: hidden;
+}
